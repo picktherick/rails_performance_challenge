@@ -1,0 +1,35 @@
+<h1>Orders</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Customer</th>
+      <th>Email</th>
+      <th>Product</th>
+      <th>SKU</th>
+      <th>Category</th>
+      <th>Quantity</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%# PROBLEMA: Cada linha causa N+1 queries para product %>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td><%= order.customer_name %></td>
+        <td><%= order.customer_email %></td>
+        <td><%= order.product.name %></td>
+        <td><%= order.product.sku %></td>
+        <td><%= order.product.category %></td>
+        <td><%= order.quantity %></td>
+        <td><%= number_to_currency(order.total_amount) %></td>
+        <td><%= order.status %></td>
+        <td><%= order.order_date %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
