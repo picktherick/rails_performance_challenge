@@ -43,10 +43,10 @@ rbenv --version
 rbenv install -l
 ```
 
-### 2. Extraia os arquivos
+### 2. clone o repositório
 
 ```bash
-unzip rails_performance_challenge.zip
+git clone <url-do-repositorio>
 cd rails_performance_challenge
 ```
 
