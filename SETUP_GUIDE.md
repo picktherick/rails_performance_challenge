@@ -100,11 +100,8 @@ bundle exec rake db:migrate
 ### 5. Popule o banco de dados (para testar)
 
 ```bash
-# Para testes completos (100.000 pedidos)
+# Para testes completos (30.000 pedidos)
 bundle exec rake db:seed_challenge
-
-# OU para testes rápidos (10.000 pedidos)
-bundle exec rake db:seed_minimal
 ```
 
 ### 6. Execute os testes de performance
