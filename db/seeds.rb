@@ -6,5 +6,4 @@
 #   rake db:seed_minimal     (500 pedidos)
 
 puts "Para popular o banco de dados, use:"
-puts "  rake db:seed_challenge   # 10.000 pedidos (completo)"
-puts "  rake db:seed_minimal     # 500 pedidos (rápido)"
+puts "rake db:seed_challenge   # 30.000 pedidos (completo)"
