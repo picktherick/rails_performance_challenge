@@ -13,6 +13,12 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     expose:
       - "3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   app:
     platform: linux/arm64
