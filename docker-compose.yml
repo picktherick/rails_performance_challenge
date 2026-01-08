@@ -5,6 +5,7 @@ services:
     restart: always
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -25,7 +26,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: bash
+    command: bundle exec rails server -b 0.0.0.0
     stdin_open: true
     tty: true
     volumes:

@@ -12,8 +12,8 @@ RUN mkdir -p /root/.ssh
 # Define as permissões corretas
 RUN chmod 700 /root/.ssh
 
-# Copiar Gemfile e Gemfile.lock
-COPY Gemfile Gemfile.lock ./
+# Copiar Gemfile
+COPY Gemfile ./
 
 # Instalar gems
 RUN gem install bundler -v '1.17.3' 
