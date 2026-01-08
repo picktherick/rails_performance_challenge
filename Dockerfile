@@ -1,6 +1,7 @@
-FROM ruby:2.5.1
+FROM --platform=linux/arm64 ruby:2.5.1
 
 ENV BUNDLER_VERSION=1.17.3
+ENV BUNDLE_PATH=/usr/local/bundle
 
 # Configurar diretório de trabalho
 WORKDIR /app
