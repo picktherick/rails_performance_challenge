@@ -54,7 +54,7 @@ cd rails_performance_challenge
 
 ```bash
 gem install bundler -v '~> 1.17'
-bundle install
+bundle _1.17.3_ install
 ```
 
 **Nota:** Se encontrar erros com o `mysql2`, tente:
