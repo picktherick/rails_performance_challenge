@@ -17,10 +17,30 @@ Este guia mostra como criar o projeto Rails a partir dos arquivos fornecidos.
 # Com rbenv
 rbenv install 2.5.1
 rbenv local 2.5.1
+```
+- _Nota: Caso não tenha o rbenv, instale com os seguintes passos:_
 
-# OU com rvm
-rvm install 2.5.1
-rvm use 2.5.1
+```bash
+# Instale dependências necessárias
+sudo apt update
+sudo apt install -y git build-essential libssl-dev libreadline-dev zlib1g-dev
+
+# Clone o repositório do rbenv
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+
+# Configure o rbenv no bash
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init - bash)"' >> ~/.bashrc
+
+# Recarregue o shell
+source ~/.bashrc
+
+# Instale o ruby-build (plugin do rbenv)
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+# Verifique a instalação
+rbenv --version
+rbenv install -l
 ```
 
 ### 2. Extraia os arquivos
