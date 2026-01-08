@@ -67,6 +67,22 @@ bundle config build.mysql2 --with-mysql-config=/usr/local/opt/mysql/bin/mysql_co
 sudo apt-get install libmysqlclient-dev
 ```
 
+_Configure o user root (se necessário)_
+```bash
+sudo service mysql stop
+
+# Entre no bash do Mysql
+sudo mysql
+
+# No bash do Mysql
+ALTER USER 'root'@'localhost'
+IDENTIFIED WITH mysql_native_password BY 'sua_senha'; 
+FLUSH PRIVILEGES;
+\q
+
+sudo service mysql stop
+```
+
 ### 4. Configure o banco de dados
 
 ```bash
