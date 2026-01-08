@@ -129,25 +129,6 @@ Você verá os alertas do Bullet sobre N+1 queries.
 
 ---
 
-## Preparando para o Candidato
-
-### O que o candidato receberá:
-1. Acesso ao repositório (ou um fork)
-2. README.md com instruções
-
-### O que o candidato NÃO deve ver:
-1. ❌ CHEAT_SHEET.md (está no .gitignore)
-2. ❌ Este arquivo SETUP_GUIDE.md
-
-### Verificação final:
-```bash
-# Confirme que CHEAT_SHEET.md não está no repo
-git ls-files | grep CHEAT_SHEET
-# Não deve retornar nada
-```
-
----
-
 ## Estrutura do Projeto
 
 ```
