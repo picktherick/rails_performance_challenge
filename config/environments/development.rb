@@ -9,6 +9,7 @@ Rails.application.configure do
   config.assets.debug = true
   config.assets.digest = true
   config.assets.raise_runtime_errors = true
+  config.assets.compile = true
 
   # Bullet configuration para detectar N+1 queries
   config.after_initialize do
