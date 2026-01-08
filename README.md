@@ -43,14 +43,9 @@ rake db:migrate
 
 ### 4. Popule o banco de dados
 
-Para testes completos (100.000 pedidos):
+Para testes completos (30.000 pedidos):
 ```bash
 rake db:seed_challenge
-```
-
-Para testes rápidos (10.000 pedidos):
-```bash
-rake db:seed_minimal
 ```
 
 ## 🧪 Executando os Testes
