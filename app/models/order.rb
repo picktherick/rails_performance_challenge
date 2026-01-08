@@ -16,7 +16,6 @@ class Order < ActiveRecord::Base
   scope :cancelled, -> { where(status: 'cancelled') }
 
   # PROBLEMA: Este método causa N+1 queries
-  # Para cada order, faz uma query para buscar o product
   def self.generate_report
     orders = Order.all
     report = []
@@ -26,9 +25,9 @@ class Order < ActiveRecord::Base
         order_id: order.id,
         customer_name: order.customer_name,
         customer_email: order.customer_email,
-        product_name: order.product.name,        # N+1 aqui!
-        product_sku: order.product.sku,          # N+1 aqui!
-        product_category: order.product.category, # N+1 aqui!
+        product_name: order.product.name,
+        product_sku: order.product.sku,
+        product_category: order.product.category,
         quantity: order.quantity,
         total_amount: order.total_amount,
         status: order.status,
@@ -46,9 +45,9 @@ class Order < ActiveRecord::Base
     STATUSES.each do |status|
       orders = Order.where(status: status)
       summary[status] = {
-        count: orders.count,                    # Query para cada status
-        total_revenue: orders.sum(:total_amount), # Outra query para cada status
-        avg_order_value: orders.average(:total_amount) # Mais uma query
+        count: orders.count,
+        total_revenue: orders.sum(:total_amount),
+        avg_order_value: orders.average(:total_amount)
       }
     end
 

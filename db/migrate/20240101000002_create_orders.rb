@@ -19,10 +19,5 @@ class CreateOrders < ActiveRecord::Migration
     end
 
     # NOTA: Propositalmente SEM índices para o desafio de performance
-    # Campos que normalmente teriam índices:
-    # - product_id (foreign key)
-    # - customer_email (buscas frequentes)
-    # - status (filtros frequentes)
-    # - order_date (ordenação e filtros por data)
   end
 end

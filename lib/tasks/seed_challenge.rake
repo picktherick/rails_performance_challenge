@@ -14,10 +14,10 @@ namespace :db do
     100.times do |i|
       products << Product.create!(
         name: Faker::Commerce.product_name,
-        sku: "SKU-#{Faker::Alphanumeric.alphanumeric(number: 8).upcase}",
-        price: Faker::Commerce.price(range: 10.0..500.0),
+        sku: "SKU-#{Faker::Alphanumeric.alphanumeric(8).upcase}",
+        price: Faker::Commerce.price(10.0..500.0),
         category: categories.sample,
-        description: Faker::Lorem.paragraph(sentence_count: 3),
+        description: Faker::Lorem.paragraph(3),
         active: [true, true, true, false].sample
       )
       print "." if (i + 1) % 10 == 0
@@ -30,7 +30,7 @@ namespace :db do
               'Salvador', 'Fortaleza', 'Brasília', 'Recife', 'Manaus']
     states = ['SP', 'RJ', 'MG', 'RS', 'PR', 'BA', 'CE', 'DF', 'PE', 'AM']
 
-    order_count = 10_000
+    order_count = 30_000
     batch_size = 1000
 
     order_count.times do |i|
@@ -44,7 +44,7 @@ namespace :db do
         status: statuses.sample,
         quantity: quantity,
         total_amount: product.price * quantity,
-        order_date: Faker::Date.between(from: 1.year.ago, to: Date.today),
+        order_date: Faker::Date.between(1.year.ago, Date.today),
         shipping_address: Faker::Address.street_address,
         city: cities.sample,
         state: states.sample,
@@ -80,10 +80,10 @@ namespace :db do
     10.times do
       products << Product.create!(
         name: Faker::Commerce.product_name,
-        sku: "SKU-#{Faker::Alphanumeric.alphanumeric(number: 8).upcase}",
-        price: Faker::Commerce.price(range: 10.0..500.0),
+        sku: "SKU-#{Faker::Alphanumeric.alphanumeric(8).upcase}",
+        price: Faker::Commerce.price(10.0..500.0),
         category: categories.sample,
-        description: Faker::Lorem.paragraph(sentence_count: 2),
+        description: Faker::Lorem.paragraph(2),
         active: true
       )
     end
@@ -103,7 +103,7 @@ namespace :db do
         status: statuses.sample,
         quantity: quantity,
         total_amount: product.price * quantity,
-        order_date: Faker::Date.between(from: 3.months.ago, to: Date.today),
+        order_date: Faker::Date.between(3.months.ago, Date.today),
         shipping_address: Faker::Address.street_address,
         city: 'São Paulo',
         state: 'SP',

@@ -1,5 +1,12 @@
 ENV['RAILS_ENV'] ||= 'test'
+
+# Suprimir warnings de BigDecimal deprecation do ActiveRecord 4.2
+$VERBOSE = nil
+
 require File.expand_path('../../config/environment', __FILE__)
+
+# Restaurar warnings após carregar o Rails
+$VERBOSE = false
 
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 

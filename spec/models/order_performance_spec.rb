@@ -10,9 +10,23 @@ RSpec.describe Order, type: :model do
       @products = create_list(:product, 50)
       @orders = []
 
-      1000.times do
+      total = 5_000
+      puts "Criando #{total} pedidos..."
+
+      total.times do |i|
         @orders << create(:order, product: @products.sample)
+
+        if (i + 1) % 1000 == 0
+          percentage = ((i + 1).to_f / total * 100).round(1)
+          bar_length = 50
+          filled = (percentage / 100 * bar_length).round
+          empty = [bar_length - filled - 1, 0].max
+          bar = '=' * filled + '>' + ' ' * empty
+          print "\r[#{bar}] #{percentage}% (#{i + 1}/#{total})"
+        end
       end
+
+      puts "\n"
 
       puts "\n" + "=" * 60
       puts "DADOS DE TESTE CRIADOS:"
@@ -34,22 +48,23 @@ RSpec.describe Order, type: :model do
         puts "\n--- Teste: generate_report ---"
 
         query_count = 0
-        ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
-          query_count += 1
+        subscriber = ActiveSupport::Notifications.subscribe('sql.active_record') do |name, start, finish, id, payload|
+          # Ignorar queries de schema e BEGIN/COMMIT
+          unless ['SCHEMA', 'CACHE'].include?(payload[:name]) || payload[:sql] =~ /^(BEGIN|COMMIT|ROLLBACK|SAVEPOINT)/
+            query_count += 1
+          end
         end
 
         time = Benchmark.measure do
           Order.generate_report
         end
 
-        ActiveSupport::Notifications.unsubscribe('sql.active_record')
+        ActiveSupport::Notifications.unsubscribe(subscriber)
 
         puts "Tempo de execução: #{time.real.round(4)} segundos"
         puts "Número de queries: #{query_count}"
         puts "-" * 40
 
-        # META: Após otimização, deve executar em menos de 0.5 segundos
-        # e usar menos de 10 queries (idealmente 2-3 com eager loading)
         expect(Order.generate_report).to be_an(Array)
       end
     end
@@ -59,15 +74,17 @@ RSpec.describe Order, type: :model do
         puts "\n--- Teste: orders_summary_by_status ---"
 
         query_count = 0
-        ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
-          query_count += 1
+        subscriber = ActiveSupport::Notifications.subscribe('sql.active_record') do |name, start, finish, id, payload|
+          unless ['SCHEMA', 'CACHE'].include?(payload[:name]) || payload[:sql] =~ /^(BEGIN|COMMIT|ROLLBACK|SAVEPOINT)/
+            query_count += 1
+          end
         end
 
         time = Benchmark.measure do
           Order.orders_summary_by_status
         end
 
-        ActiveSupport::Notifications.unsubscribe('sql.active_record')
+        ActiveSupport::Notifications.unsubscribe(subscriber)
 
         puts "Tempo de execução: #{time.real.round(4)} segundos"
         puts "Número de queries: #{query_count}"
@@ -83,13 +100,13 @@ RSpec.describe Order, type: :model do
         puts "\n--- Teste: search_by_customer ---"
 
         time = Benchmark.measure do
-          100.times do
+          5000.times do
             Order.search_by_customer('customer')
           end
         end
 
-        puts "Tempo para 100 buscas: #{time.real.round(4)} segundos"
-        puts "Média por busca: #{(time.real / 100 * 1000).round(4)} ms"
+        puts "Tempo para 5000 buscas: #{time.real.round(4)} segundos"
+        puts "Média por busca: #{(time.real / 5000 * 1000).round(4)} ms"
         puts "-" * 40
 
         # META: Após adicionar índice, deve ser significativamente mais rápido
@@ -105,13 +122,13 @@ RSpec.describe Order, type: :model do
         end_date = Date.today
 
         time = Benchmark.measure do
-          100.times do
+          5000.times do
             Order.find_by_date_range(start_date, end_date)
           end
         end
 
-        puts "Tempo para 100 buscas: #{time.real.round(4)} segundos"
-        puts "Média por busca: #{(time.real / 100 * 1000).round(4)} ms"
+        puts "Tempo para 5000 buscas: #{time.real.round(4)} segundos"
+        puts "Média por busca: #{(time.real / 5000 * 1000).round(4)} ms"
         puts "-" * 40
 
         # META: Após adicionar índice em order_date, deve ser mais rápido
@@ -124,15 +141,17 @@ RSpec.describe Order, type: :model do
         puts "\n--- Teste: count_orders_by_city ---"
 
         query_count = 0
-        ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
-          query_count += 1
+        subscriber = ActiveSupport::Notifications.subscribe('sql.active_record') do |name, start, finish, id, payload|
+          unless ['SCHEMA', 'CACHE'].include?(payload[:name]) || payload[:sql] =~ /^(BEGIN|COMMIT|ROLLBACK|SAVEPOINT)/
+            query_count += 1
+          end
         end
 
         time = Benchmark.measure do
           Order.count_orders_by_city
         end
 
-        ActiveSupport::Notifications.unsubscribe('sql.active_record')
+        ActiveSupport::Notifications.unsubscribe(subscriber)
 
         puts "Tempo de execução: #{time.real.round(4)} segundos"
         puts "Número de queries: #{query_count}"
@@ -150,13 +169,13 @@ RSpec.describe Order, type: :model do
         date = Date.today - 30.days
 
         time = Benchmark.measure do
-          50.times do
+          500.times do
             Order.calculate_daily_revenue(date)
           end
         end
 
-        puts "Tempo para 50 cálculos: #{time.real.round(4)} segundos"
-        puts "Média por cálculo: #{(time.real / 50 * 1000).round(4)} ms"
+        puts "Tempo para 500 cálculos: #{time.real.round(4)} segundos"
+        puts "Média por cálculo: #{(time.real / 500 * 1000).round(4)} ms"
         puts "-" * 40
 
         # META: Após usar SUM no banco, deve ser muito mais rápido
@@ -168,26 +187,29 @@ RSpec.describe Order, type: :model do
   describe 'Query Count Tests (N+1 Detection)' do
     before do
       @products = create_list(:product, 10)
-      100.times { create(:order, product: @products.sample) }
+      1000.times { create(:order, product: @products.sample) }
     end
 
     it 'detecta problema N+1 no generate_report' do
       query_count = 0
 
-      ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
-        query_count += 1
+      subscriber = ActiveSupport::Notifications.subscribe('sql.active_record') do |name, start, finish, id, payload|
+        unless ['SCHEMA', 'CACHE'].include?(payload[:name]) || payload[:sql] =~ /^(BEGIN|COMMIT|ROLLBACK|SAVEPOINT)/
+          query_count += 1
+        end
       end
 
       Order.generate_report
 
-      ActiveSupport::Notifications.unsubscribe('sql.active_record')
+      ActiveSupport::Notifications.unsubscribe(subscriber)
 
       puts "\n[N+1 Test] generate_report executou #{query_count} queries"
+      puts "-" * 40
 
-      # ANTES da otimização: > 100 queries (1 + N para cada order)
-      # DEPOIS da otimização: deve ser < 5 queries
+      # ANTES da otimização: > 1000 queries (1 + N para cada order)
+      # DEPOIS da otimização: deve ser < 3 queries
       # Este expect vai FALHAR antes da otimização - é intencional!
-      # expect(query_count).to be < 5
+      # expect(query_count).to be < 3
     end
   end
 end
