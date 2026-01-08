@@ -1,0 +1,17 @@
+FROM ruby:3.1
+
+# Defina o diretório de trabalho
+WORKDIR /app
+
+# Instalar dependências do sistema (se necessário)
+RUN apt-get update && apt-get install -y \
+    build-essential
+
+# Instalar o Solargraph
+RUN gem install solargraph
+
+# Expor a porta padrão do Solargraph
+EXPOSE 7658
+
+# Definir o comando padrão para iniciar o Solargraph
+CMD ["solargraph", "socket", "--host", "0.0.0.0", "--port", "7658"]
