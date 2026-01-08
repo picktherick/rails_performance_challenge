@@ -136,27 +136,26 @@ rails_performance_challenge/
 ├── app/
 │   ├── controllers/
 │   │   ├── application_controller.rb
-│   │   └── orders_controller.rb      # Problemas aqui
+│   │   └── orders_controller.rb
 │   ├── models/
-│   │   ├── order.rb                  # Problemas aqui
+│   │   ├── order.rb
 │   │   └── product.rb
 │   └── views/
 │       └── orders/
-│           └── index.html.erb        # N+1 na view
+│           └── index.html.erb
 ├── config/
 │   └── ...
 ├── db/
 │   └── migrate/
-│       ├── 20240101000001_create_products.rb  # Sem índices
-│       └── 20240101000002_create_orders.rb    # Sem índices
+│       ├── 20240101000001_create_products.rb
+│       └── 20240101000002_create_orders.rb
 ├── lib/
 │   └── tasks/
 │       └── seed_challenge.rake        # Task para popular
 ├── spec/
 │   └── models/
 │       └── order_performance_spec.rb  # Testes de performance
-├── CHEAT_SHEET.md                     # CONFIDENCIAL!
-├── README.md                          # Para o candidato
+├── README.md                          # Instruções
 └── SETUP_GUIDE.md                     # Este arquivo
 ```
 
@@ -205,7 +204,3 @@ rbenv local 2.5.1
 ```bash
 bundle exec rails generate rspec:install
 ```
-
----
-
-Qualquer dúvida, entre em contato!
