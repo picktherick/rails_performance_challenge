@@ -69,8 +69,6 @@ sudo apt-get install libmysqlclient-dev
 
 _Configure o user root (se necessário)_
 ```bash
-sudo service mysql stop
-
 # Entre no bash do Mysql
 sudo mysql
 
@@ -80,7 +78,7 @@ IDENTIFIED WITH mysql_native_password BY 'sua_senha';
 FLUSH PRIVILEGES;
 \q
 
-sudo service mysql stop
+sudo service mysql restart
 ```
 
 ### 4. Configure o banco de dados
