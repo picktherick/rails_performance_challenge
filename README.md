@@ -23,7 +23,8 @@ cd rails_performance_challenge
 ### 2. Instale as dependências
 
 ```bash
-bundle install
+gem install bundler -v '~> 1.17'
+bundle _1.17.3_ install
 ```
 
 ### 3. Configure o banco de dados
