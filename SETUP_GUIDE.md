@@ -129,46 +129,6 @@ Você verá os alertas do Bullet sobre N+1 queries.
 
 ---
 
-## Enviando para o GitHub
-
-### 1. Inicialize o repositório
-
-```bash
-cd rails_performance_challenge
-git init
-```
-
-### 2. Configure o .gitignore
-
-O `.gitignore` já está configurado para ignorar:
-- Arquivos de banco de dados SQLite
-- Logs
-- Arquivos temporários
-- **CHEAT_SHEET.md** (confidencial!)
-
-### 3. Faça o commit inicial
-
-```bash
-git add .
-git commit -m "Initial commit - Performance Challenge"
-```
-
-### 4. Crie o repositório no GitHub
-
-1. Vá em https://github.com/new
-2. Crie um repositório **privado**
-3. NÃO inicialize com README
-
-### 5. Conecte e envie
-
-```bash
-git remote add origin git@github.com:seu-usuario/rails-performance-challenge.git
-git branch -M main
-git push -u origin main
-```
-
----
-
 ## Preparando para o Candidato
 
 ### O que o candidato receberá:
